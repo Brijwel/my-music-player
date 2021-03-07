@@ -13,6 +13,7 @@ import com.brijwel.mymusicplayer.exoplayer.isPrepared
 import com.brijwel.mymusicplayer.repo.MusicRepo
 import com.brijwel.mymusicplayer.util.Constant
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 
 /**
  * Created by Brijwel on 07-03-2021.
@@ -52,6 +53,7 @@ class MusicListViewModel(
     }
 
     fun playOrToggleSong(mediaItem: Music, toggle: Boolean = false) {
+        Timber.d("playOrToggleSong")
         val isPrepared = playbackState.value?.isPrepared ?: false
         if (isPrepared && mediaItem.id ==
             curPlayingSong.value?.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID)

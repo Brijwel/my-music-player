@@ -12,6 +12,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 /**
  * Created by Brijwel on 07-03-2021.
@@ -24,7 +25,7 @@ class MusicSource(private val apiService: ApiService) {
         try {
             val musicsFromRemote = apiService.getMusics()
             if (musicsFromRemote.music.isNullOrEmpty()) {
-                musics=musicsFromRemote.music.map { music->
+                musics = musicsFromRemote.music.map { music ->
                     MediaMetadataCompat.Builder()
                         .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, music.artist)
                         .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, music.id)
@@ -34,18 +35,27 @@ class MusicSource(private val apiService: ApiService) {
                         .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI, music.source)
                         .putString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI, music.image)
                         .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, music.album)
-                        .putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION, music.genre)
+                        .putString(
+                            MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION,
+                            music.genre
+                        )
                         .build()
                 }
+                state = State.STATE_INITIALIZED
             }
-        } catch (e: Exception) { }
+        } catch (e: Exception) {
+            Timber.d(e)
+        }
 
     }
+
     fun asMediaSource(dataSourceFactory: DefaultDataSourceFactory): ConcatenatingMediaSource {
         val concatenatingMediaSource = ConcatenatingMediaSource()
         musics.forEach { song ->
             val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(song.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI).toUri())
+                .createMediaSource(
+                    song.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_URI).toUri()
+                )
             concatenatingMediaSource.addMediaSource(mediaSource)
         }
         return concatenatingMediaSource
@@ -61,6 +71,7 @@ class MusicSource(private val apiService: ApiService) {
             .build()
         MediaBrowserCompat.MediaItem(desc, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE)
     }.toMutableList()
+
     private val onReadyListeners = mutableListOf<(Boolean) -> Unit>()
 
     private var state: State = STATE_CREATED
@@ -78,12 +89,12 @@ class MusicSource(private val apiService: ApiService) {
         }
 
     fun whenReady(action: (Boolean) -> Unit): Boolean {
-        return if (state == STATE_CREATED || state == State.STATE_INITIALIZING) {
+        if (state == STATE_CREATED || state == STATE_INITIALIZING) {
             onReadyListeners += action
-            false
+            return false
         } else {
             action(state == State.STATE_INITIALIZED)
-            true
+            return true
         }
     }
 }
