@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_overlay"
+        android:backgroundTint="@color/purple_200"
+        android:fitsSystemWindows="true">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/albumArt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@color/white"
+            app:srcCompat="@android:color/transparent" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_22"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_close_within_circle"
+            android:tint="@color/purple_200"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMediaCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:text="Introspective"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintBottom_toTopOf="@+id/tvMediaName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMediaName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_50"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="Humble Proofreading - Patches"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toTopOf="@+id/soundWaveProgressBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.masoudss.lib.WaveformSeekBar
+            android:id="@+id/soundWaveProgressBar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_60"
+            android:layout_marginStart="@dimen/dp_25"
+            android:layout_marginEnd="@dimen/dp_25"
+            android:layout_marginBottom="@dimen/dp_50"
+            app:layout_constraintBottom_toTopOf="@+id/ivPlayOrPause"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:wave_background_color="#26BB86FC"
+            app:wave_corner_radius="8dp"
+            app:wave_gap="2dp"
+            app:wave_gravity="center"
+            app:wave_max_progress="100"
+            app:wave_min_height="1dp"
+            app:wave_progress="33"
+            app:wave_progress_color="@color/purple_200"
+            app:wave_width="3dp" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivRestartAudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/purple_200"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPlayOrPause"
+            app:layout_constraintEnd_toStartOf="@+id/imFastBackward"
+            app:layout_constraintStart_toStartOf="@+id/sbAudioProgress"
+            app:layout_constraintTop_toTopOf="@+id/ivPlayOrPause"
+            app:srcCompat="@drawable/ic_restart_media" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imFastBackward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPlayOrPause"
+            app:layout_constraintEnd_toStartOf="@+id/ivPlayOrPause"
+            app:layout_constraintStart_toEndOf="@+id/ivRestartAudio"
+            app:layout_constraintTop_toTopOf="@+id/ivPlayOrPause"
+            app:srcCompat="@drawable/ic_fast_backward_media" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivPlayOrPause"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/dp_25"
+            android:background="@drawable/bg_circle_primary"
+            android:padding="@dimen/dp_10"
+            app:layout_constraintBottom_toTopOf="@+id/sbAudioProgress"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/ic_play_media" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imFastForward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPlayOrPause"
+            app:layout_constraintEnd_toStartOf="@+id/ivStopAudio"
+            app:layout_constraintStart_toEndOf="@+id/ivPlayOrPause"
+            app:layout_constraintTop_toTopOf="@+id/ivPlayOrPause"
+            app:srcCompat="@drawable/ic_fast_forward_media" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivStopAudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/purple_200"
+            app:layout_constraintBottom_toBottomOf="@+id/ivPlayOrPause"
+            app:layout_constraintEnd_toEndOf="@+id/sbAudioProgress"
+            app:layout_constraintStart_toEndOf="@+id/imFastForward"
+            app:layout_constraintTop_toTopOf="@+id/ivPlayOrPause"
+            app:srcCompat="@drawable/ic_stop_media" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/sbAudioProgress"
+            style="@style/AmbianceSeekBar"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_18"
+            android:layout_marginStart="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:progress="40"
+            app:layout_constraintBottom_toTopOf="@+id/tvTimeElapsed"
+            app:layout_constraintEnd_toEndOf="@+id/tvTimeRemaining"
+            app:layout_constraintStart_toStartOf="@+id/tvTimeElapsed" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTimeElapsed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_22"
+            android:text="1:50"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTimeRemaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_22"
+            android:text="2:50"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toTopOf="@+id/bottomGuideline"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bottomGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="20dp"
+            app:layout_constraintGuide_percent="0.95" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

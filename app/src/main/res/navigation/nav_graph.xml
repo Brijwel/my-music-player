@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_music_list">
+
+    <fragment
+        android:id="@+id/nav_music_list"
+        android:name="com.brijwel.mymusicplayer.ui.MusicListFragment"
+        android:label="MusicListFragment"
+        tools:layout="@layout/fragment_music_list"/>
+    <fragment
+        android:id="@+id/nav_now_playing"
+        android:name="com.brijwel.mymusicplayer.ui.NowPlayingFragment"
+        android:label="NowPlayingFragment" />
+</navigation>
