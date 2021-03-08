@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.brijwel.mymusicplayer.R
-import com.brijwel.mymusicplayer.api.Music
+import com.brijwel.mymusicplayer.data.remote.Music
 import com.brijwel.mymusicplayer.databinding.ItemMusicBinding
 
 /**

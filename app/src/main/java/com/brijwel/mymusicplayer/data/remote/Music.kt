@@ -1,4 +1,4 @@
-package com.brijwel.mymusicplayer.api
+package com.brijwel.mymusicplayer.data.remote
 
 import androidx.recyclerview.widget.DiffUtil
 

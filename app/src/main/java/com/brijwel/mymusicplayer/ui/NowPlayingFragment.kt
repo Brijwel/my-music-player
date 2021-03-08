@@ -13,6 +13,8 @@ import com.brijwel.mymusicplayer.databinding.FragmentNowPlayingMusicBinding
 import com.brijwel.mymusicplayer.exoplayer.isPlaying
 import com.brijwel.mymusicplayer.repo.WaveFormData
 import com.brijwel.mymusicplayer.util.Constant
+import com.brijwel.mymusicplayer.util.Status
+import com.google.android.material.snackbar.Snackbar
 import com.masoudss.lib.SeekBarOnProgressChanged
 import com.masoudss.lib.WaveformSeekBar
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,6 +40,22 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing_music) {
             soundWaveProgressBar.sample = WaveFormData.getWaveDate()
             ivBack.setOnClickListener { findNavController().navigateUp() }
 
+            viewModel.isConnected.observe(viewLifecycleOwner) {
+                it?.getContentIfNotHandled()?.let { result ->
+
+                    when (result.status) {
+                        Status.ERROR -> Snackbar.make(
+                            requireView(),
+                            result.message ?: "An unknown error occured",
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                        else -> Unit
+                    }
+                    if (!result.data!!) {
+                        findNavController().popBackStack()
+                    }
+                }
+            }
 
             ivPlayOrPause.setOnClickListener {
                 viewModel.playOrToggleSong(mediaId, true)

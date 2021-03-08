@@ -5,13 +5,16 @@ import android.support.v4.media.MediaMetadataCompat
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import com.brijwel.mymusicplayer.api.Music
 import com.brijwel.mymusicplayer.api.Resource
-import com.brijwel.mymusicplayer.exoplayer.*
+import com.brijwel.mymusicplayer.data.local.MediaItemData
+import com.brijwel.mymusicplayer.data.remote.Music
+import com.brijwel.mymusicplayer.exoplayer.MusicServiceConnection
+import com.brijwel.mymusicplayer.exoplayer.isPlayEnabled
+import com.brijwel.mymusicplayer.exoplayer.isPlaying
+import com.brijwel.mymusicplayer.exoplayer.isPrepared
 import com.brijwel.mymusicplayer.repo.MusicRepo
 import com.brijwel.mymusicplayer.util.Constant
 import kotlinx.coroutines.flow.flow
-import timber.log.Timber
 
 /**
  * Created by Brijwel on 07-03-2021.
@@ -38,6 +41,13 @@ class MusicListViewModel(
                     super.onChildrenLoaded(parentId, children)
                     val medias = children.map {
                         Log.d(TAG, "onChildrenLoaded: ${it.description.title}")
+                        MediaItemData(
+                            it.mediaId!!,
+                            it.description.title.toString(),
+                            it.description.subtitle.toString(),
+                            it.description.mediaUri.toString(),
+                            it.description.iconUri.toString()
+                        )
                     }
                 }
             })
@@ -56,8 +66,8 @@ class MusicListViewModel(
     }
 
     fun stopMusic() {
+        musicServiceConnection.transportControls.seekTo(0L)
         musicServiceConnection.transportControls.pause()
-
     }
 
     fun rewindMusic() {
@@ -110,6 +120,7 @@ class MusicListViewModel(
         musicServiceConnection.unsubscribe(
             Constant.MEDIA_ROOT_ID,
             object : MediaBrowserCompat.SubscriptionCallback() {})
+
     }
 
     fun getMusic() = flow {

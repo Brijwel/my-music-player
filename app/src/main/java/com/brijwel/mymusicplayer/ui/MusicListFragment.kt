@@ -26,9 +26,7 @@ class MusicListFragment : Fragment(R.layout.fragment_music_list) {
 
     private val viewModel: MusicListViewModel by viewModel()
 
-    private val musicAdapter = MusicAdapter() { music ->
-        Toast.makeText(requireContext(), "${music.title} clicked", Toast.LENGTH_SHORT).show()
-
+    private val musicAdapter = MusicAdapter { music ->
         findNavController().navigate(
             R.id.nav_now_playing,
             bundleOf(Constant.SELECTED_MEDIA to music.id)

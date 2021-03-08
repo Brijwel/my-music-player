@@ -4,15 +4,12 @@ import android.app.PendingIntent
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
-import android.transition.Transition
 import coil.Coil
 import coil.api.load
 import com.brijwel.mymusicplayer.R
-import com.brijwel.mymusicplayer.util.Constant.NOTIFICATION_CHANNEL_ID
-import com.brijwel.mymusicplayer.util.Constant.NOTIFICATION_ID
+import com.brijwel.mymusicplayer.util.Constant
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 
@@ -31,10 +28,10 @@ class MusicNotificationManager(
         val mediaController = MediaControllerCompat(context, sessionToken)
         notificationManager = PlayerNotificationManager.createWithNotificationChannel(
             context,
-            NOTIFICATION_CHANNEL_ID,
+            Constant.NOTIFICATION_CHANNEL_ID,
             R.string.notification_channel_name,
             R.string.notification_channel_description,
-            NOTIFICATION_ID,
+            Constant.NOTIFICATION_ID,
             DescriptionAdapter(mediaController),
             notificationListener
         ).apply {
@@ -43,7 +40,7 @@ class MusicNotificationManager(
             setRewindIncrementMs(0)
             setFastForwardIncrementMs(0)
             setUseNavigationActionsInCompactView(true)
-
+            setUseNavigationActions(true)
         }
     }
 
@@ -72,6 +69,7 @@ class MusicNotificationManager(
             player: Player,
             callback: PlayerNotificationManager.BitmapCallback
         ): Bitmap? {
+
             Coil.load(context, mediaController.metadata.description.iconUri) {
                 target { drawable ->
                     val bitmap = (drawable as BitmapDrawable).bitmap

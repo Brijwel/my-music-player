@@ -7,7 +7,7 @@
 
         <variable
             name="music"
-            type="com.brijwel.mymusicplayer.api.Music" />
+            type="com.brijwel.mymusicplayer.data.remote.Music" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

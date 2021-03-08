@@ -84,7 +84,7 @@ class MusicService : MediaBrowserServiceCompat() {
             preparePlayer(
                 musicSource.musics,
                 it,
-                false
+                true
             )
         }
 
@@ -145,7 +145,7 @@ class MusicService : MediaBrowserServiceCompat() {
     ) {
         when (parentId) {
             Constant.MEDIA_ROOT_ID -> {
-                val resultsSent = musicSource.whenReady { isInitialized ->
+                val resultsSent = musicSource. whenReady { isInitialized ->
                     if (isInitialized) {
                         result.sendResult(musicSource.asMediaItems())
                         if (!isPlayerInitialized && musicSource.musics.isNotEmpty()) {
