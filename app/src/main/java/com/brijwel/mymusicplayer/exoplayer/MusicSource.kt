@@ -3,6 +3,7 @@ package com.brijwel.mymusicplayer.exoplayer
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
+import android.util.Log
 import androidx.core.net.toUri
 import com.brijwel.mymusicplayer.api.ApiService
 import com.brijwel.mymusicplayer.exoplayer.State.STATE_CREATED
@@ -17,14 +18,16 @@ import timber.log.Timber
 /**
  * Created by Brijwel on 07-03-2021.
  */
+private const val TAG = "MusicSource"
 class MusicSource(private val apiService: ApiService) {
     var musics = emptyList<MediaMetadataCompat>()
 
     suspend fun fetchMusic() = withContext(Dispatchers.IO) {
         state = STATE_INITIALIZING
+        Log.d(TAG, "fetchMusic: STATE_INITIALIZING")
         try {
             val musicsFromRemote = apiService.getMusics()
-            if (musicsFromRemote.music.isNullOrEmpty()) {
+            if (musicsFromRemote.music.isNotEmpty()) {
                 musics = musicsFromRemote.music.map { music ->
                     MediaMetadataCompat.Builder()
                         .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, music.artist)
@@ -41,9 +44,14 @@ class MusicSource(private val apiService: ApiService) {
                         )
                         .build()
                 }
-                state = State.STATE_INITIALIZED
+                Log.d(TAG, "fetchMusic: STATE_INITIALIZED")
+
             }
+            Log.d(TAG, "fetchMusic: STATE_INITIALIZED BUT EMPTY")
+            state = State.STATE_INITIALIZED
         } catch (e: Exception) {
+            Log.d(TAG, "fetchMusic: STATE_ERROR")
+            state = State.STATE_ERROR
             Timber.d(e)
         }
 

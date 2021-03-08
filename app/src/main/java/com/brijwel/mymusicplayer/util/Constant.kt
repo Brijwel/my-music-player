@@ -4,6 +4,7 @@ package com.brijwel.mymusicplayer.util
  * Created by Brijwel on 07-03-2021.
  */
 object Constant {
+    const val SELECTED_MEDIA="SELECTED_MEDIA"
     const val MEDIA_ROOT_ID = "root_id"
 
     const val NETWORK_ERROR = "NETWORK_ERROR"

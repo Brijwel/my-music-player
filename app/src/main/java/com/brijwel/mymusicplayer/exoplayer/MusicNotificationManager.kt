@@ -40,6 +40,10 @@ class MusicNotificationManager(
         ).apply {
             setSmallIcon(R.drawable.ic_music)
             setMediaSessionToken(sessionToken)
+            setRewindIncrementMs(0)
+            setFastForwardIncrementMs(0)
+            setUseNavigationActionsInCompactView(true)
+
         }
     }
 
@@ -68,7 +72,6 @@ class MusicNotificationManager(
             player: Player,
             callback: PlayerNotificationManager.BitmapCallback
         ): Bitmap? {
-
             Coil.load(context, mediaController.metadata.description.iconUri) {
                 target { drawable ->
                     val bitmap = (drawable as BitmapDrawable).bitmap

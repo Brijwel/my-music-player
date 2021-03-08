@@ -3,7 +3,7 @@
     package="com.brijwel.mymusicplayer">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:name=".MusicApp"
         android:allowBackup="true"

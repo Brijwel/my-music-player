@@ -1,6 +1,8 @@
 package com.brijwel.mymusicplayer.ui
 
 import android.os.Bundle
+import android.support.v4.media.MediaMetadataCompat
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -9,11 +11,15 @@ import androidx.navigation.fragment.findNavController
 import com.brijwel.mymusicplayer.R
 import com.brijwel.mymusicplayer.api.Status
 import com.brijwel.mymusicplayer.databinding.FragmentMusicListBinding
+import com.brijwel.mymusicplayer.exoplayer.isPlaying
+import com.brijwel.mymusicplayer.util.Constant
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by Brijwel on 07-03-2021.
  */
+private const val TAG = "MusicListFragment"
+
 class MusicListFragment : Fragment(R.layout.fragment_music_list) {
     private var _binding: FragmentMusicListBinding? = null
     private val binding get() = _binding!!
@@ -21,8 +27,12 @@ class MusicListFragment : Fragment(R.layout.fragment_music_list) {
     private val viewModel: MusicListViewModel by viewModel()
 
     private val musicAdapter = MusicAdapter() { music ->
-        viewModel.playOrToggleSong(music)
-        //findNavController().navigate(R.id.nav_now_playing)
+        Toast.makeText(requireContext(), "${music.title} clicked", Toast.LENGTH_SHORT).show()
+
+        findNavController().navigate(
+            R.id.nav_now_playing,
+            bundleOf(Constant.SELECTED_MEDIA to music.id)
+        )
     }
 
 

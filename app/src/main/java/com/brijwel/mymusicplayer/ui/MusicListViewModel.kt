@@ -2,14 +2,12 @@ package com.brijwel.mymusicplayer.ui
 
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.brijwel.mymusicplayer.api.Music
 import com.brijwel.mymusicplayer.api.Resource
-import com.brijwel.mymusicplayer.exoplayer.MusicServiceConnection
-import com.brijwel.mymusicplayer.exoplayer.isPlayEnabled
-import com.brijwel.mymusicplayer.exoplayer.isPlaying
-import com.brijwel.mymusicplayer.exoplayer.isPrepared
+import com.brijwel.mymusicplayer.exoplayer.*
 import com.brijwel.mymusicplayer.repo.MusicRepo
 import com.brijwel.mymusicplayer.util.Constant
 import kotlinx.coroutines.flow.flow
@@ -18,6 +16,8 @@ import timber.log.Timber
 /**
  * Created by Brijwel on 07-03-2021.
  */
+private const val TAG = "MusicListViewModel"
+
 class MusicListViewModel(
     private val musicServiceConnection: MusicServiceConnection,
     private val musicRepo: MusicRepo
@@ -36,6 +36,9 @@ class MusicListViewModel(
                     children: MutableList<MediaBrowserCompat.MediaItem>
                 ) {
                     super.onChildrenLoaded(parentId, children)
+                    val medias = children.map {
+                        Log.d(TAG, "onChildrenLoaded: ${it.description.title}")
+                    }
                 }
             })
     }
@@ -52,12 +55,22 @@ class MusicListViewModel(
         musicServiceConnection.transportControls.seekTo(pos)
     }
 
+    fun stopMusic() {
+        musicServiceConnection.transportControls.pause()
+
+    }
+
+    fun rewindMusic() {
+        musicServiceConnection.transportControls.rewind()
+    }
+
     fun playOrToggleSong(mediaItem: Music, toggle: Boolean = false) {
-        Timber.d("playOrToggleSong")
+        Log.d(TAG, "playOrToggleSong: ")
         val isPrepared = playbackState.value?.isPrepared ?: false
         if (isPrepared && mediaItem.id ==
             curPlayingSong.value?.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID)
         ) {
+            Log.d(TAG, "playOrToggleSong: isPrepared")
             playbackState.value?.let { playbackState ->
                 when {
                     playbackState.isPlaying -> if (toggle) musicServiceConnection.transportControls.pause()
@@ -66,9 +79,31 @@ class MusicListViewModel(
                 }
             }
         } else {
+            Log.d(TAG, "playOrToggleSong: not prepared")
             musicServiceConnection.transportControls.playFromMediaId(mediaItem.id, null)
         }
     }
+
+    fun playOrToggleSong(mediaId: String, toggle: Boolean = false) {
+        Log.d(TAG, "playOrToggleSong: ")
+        val isPrepared = playbackState.value?.isPrepared ?: false
+        if (isPrepared && mediaId ==
+            curPlayingSong.value?.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID)
+        ) {
+            Log.d(TAG, "playOrToggleSong: isPrepared")
+            playbackState.value?.let { playbackState ->
+                when {
+                    playbackState.isPlaying -> if (toggle) musicServiceConnection.transportControls.pause()
+                    playbackState.isPlayEnabled -> musicServiceConnection.transportControls.play()
+                    else -> Unit
+                }
+            }
+        } else {
+            Log.d(TAG, "playOrToggleSong: not prepared")
+            musicServiceConnection.transportControls.playFromMediaId(mediaId, null)
+        }
+    }
+
 
     override fun onCleared() {
         super.onCleared()

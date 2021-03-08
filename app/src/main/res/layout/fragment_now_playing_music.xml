@@ -146,7 +146,7 @@
             android:layout_marginBottom="@dimen/dp_5"
             android:progress="40"
             app:layout_constraintBottom_toTopOf="@+id/tvTimeElapsed"
-            app:layout_constraintEnd_toEndOf="@+id/tvTimeRemaining"
+            app:layout_constraintEnd_toEndOf="@+id/tvTotalTime"
             app:layout_constraintStart_toStartOf="@+id/tvTimeElapsed" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -160,7 +160,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTimeRemaining"
+            android:id="@+id/tvTotalTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_22"

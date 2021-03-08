@@ -84,7 +84,7 @@ class MusicService : MediaBrowserServiceCompat() {
             preparePlayer(
                 musicSource.musics,
                 it,
-                true
+                false
             )
         }
 
