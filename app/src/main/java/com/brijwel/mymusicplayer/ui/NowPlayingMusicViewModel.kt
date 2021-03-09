@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.brijwel.mymusicplayer.exoplayer.MusicService
 import com.brijwel.mymusicplayer.exoplayer.MusicServiceConnection
-import com.brijwel.mymusicplayer.exoplayer.currentPlaybackPosition
+import com.brijwel.mymusicplayer.exoplayer.extention.currentPlaybackPosition
 import com.brijwel.mymusicplayer.util.Constant
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

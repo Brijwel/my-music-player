@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.brijwel.mymusicplayer.R
 import com.brijwel.mymusicplayer.databinding.BindingAdapter
 import com.brijwel.mymusicplayer.databinding.FragmentNowPlayingMusicBinding
-import com.brijwel.mymusicplayer.exoplayer.isPlaying
+import com.brijwel.mymusicplayer.exoplayer.extention.isPlaying
 import com.brijwel.mymusicplayer.repo.WaveFormData
 import com.brijwel.mymusicplayer.util.Constant
 import com.brijwel.mymusicplayer.util.Status

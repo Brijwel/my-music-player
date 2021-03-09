@@ -3,15 +3,17 @@ package com.brijwel.mymusicplayer.ui
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.brijwel.mymusicplayer.api.Resource
 import com.brijwel.mymusicplayer.data.local.MediaItemData
 import com.brijwel.mymusicplayer.data.remote.Music
 import com.brijwel.mymusicplayer.exoplayer.MusicServiceConnection
-import com.brijwel.mymusicplayer.exoplayer.isPlayEnabled
-import com.brijwel.mymusicplayer.exoplayer.isPlaying
-import com.brijwel.mymusicplayer.exoplayer.isPrepared
+import com.brijwel.mymusicplayer.exoplayer.extention.isPlayEnabled
+import com.brijwel.mymusicplayer.exoplayer.extention.isPlaying
+import com.brijwel.mymusicplayer.exoplayer.extention.isPrepared
 import com.brijwel.mymusicplayer.repo.MusicRepo
 import com.brijwel.mymusicplayer.util.Constant
 import kotlinx.coroutines.flow.flow
@@ -25,12 +27,16 @@ class MusicListViewModel(
     private val musicServiceConnection: MusicServiceConnection,
     private val musicRepo: MusicRepo
 ) : ViewModel() {
+    private val _mediaItems = MutableLiveData<Resource<List<MediaItemData>>>()
+    val mediaItems: LiveData<Resource<List<MediaItemData>>> = _mediaItems
+
     val isConnected = musicServiceConnection.isConnected
     val networkError = musicServiceConnection.networkError
     val curPlayingSong = musicServiceConnection.curPlayingSong
     val playbackState = musicServiceConnection.playbackState
 
     init {
+        _mediaItems.postValue(Resource.loading(null))
         musicServiceConnection.subscribe(
             Constant.MEDIA_ROOT_ID,
             object : MediaBrowserCompat.SubscriptionCallback() {
@@ -40,7 +46,6 @@ class MusicListViewModel(
                 ) {
                     super.onChildrenLoaded(parentId, children)
                     val medias = children.map {
-                        Log.d(TAG, "onChildrenLoaded: ${it.description.title}")
                         MediaItemData(
                             it.mediaId!!,
                             it.description.title.toString(),
@@ -49,6 +54,7 @@ class MusicListViewModel(
                             it.description.iconUri.toString()
                         )
                     }
+                    _mediaItems.postValue(Resource.success(medias))
                 }
             })
     }
@@ -74,10 +80,10 @@ class MusicListViewModel(
         musicServiceConnection.transportControls.rewind()
     }
 
-    fun playOrToggleSong(mediaItem: Music, toggle: Boolean = false) {
+    fun playOrToggleSong(mediaItem: MediaItemData, toggle: Boolean = false) {
         Log.d(TAG, "playOrToggleSong: ")
         val isPrepared = playbackState.value?.isPrepared ?: false
-        if (isPrepared && mediaItem.id ==
+        if (isPrepared && mediaItem.mediaId ==
             curPlayingSong.value?.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID)
         ) {
             Log.d(TAG, "playOrToggleSong: isPrepared")
@@ -90,7 +96,7 @@ class MusicListViewModel(
             }
         } else {
             Log.d(TAG, "playOrToggleSong: not prepared")
-            musicServiceConnection.transportControls.playFromMediaId(mediaItem.id, null)
+            musicServiceConnection.transportControls.playFromMediaId(mediaItem.mediaId, null)
         }
     }
 
@@ -122,14 +128,4 @@ class MusicListViewModel(
             object : MediaBrowserCompat.SubscriptionCallback() {})
 
     }
-
-    fun getMusic() = flow {
-        emit(Resource.loading(null))
-        try {
-            val response = musicRepo.getMusics()
-            emit(Resource.success(response.music))
-        } catch (e: Exception) {
-            emit(Resource.error(e.message.toString(), null))
-        }
-    }.asLiveData()
 }

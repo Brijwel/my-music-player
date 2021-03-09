@@ -7,7 +7,7 @@
 
         <variable
             name="music"
-            type="com.brijwel.mymusicplayer.data.remote.Music" />
+            type="com.brijwel.mymusicplayer.data.local.MediaItemData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +22,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:setImage="@{music.image}"
+            app:setImage="@{music.iconUri}"
             tools:src="@tools:sample/avatars" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="@{music.artist}"
+            android:text="@{music.subtitle}"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

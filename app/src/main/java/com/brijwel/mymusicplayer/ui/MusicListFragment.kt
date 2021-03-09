@@ -1,8 +1,6 @@
 package com.brijwel.mymusicplayer.ui
 
 import android.os.Bundle
-import android.support.v4.media.MediaMetadataCompat
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -11,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.brijwel.mymusicplayer.R
 import com.brijwel.mymusicplayer.api.Status
 import com.brijwel.mymusicplayer.databinding.FragmentMusicListBinding
-import com.brijwel.mymusicplayer.exoplayer.isPlaying
 import com.brijwel.mymusicplayer.util.Constant
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -29,7 +26,7 @@ class MusicListFragment : Fragment(R.layout.fragment_music_list) {
     private val musicAdapter = MusicAdapter { music ->
         findNavController().navigate(
             R.id.nav_now_playing,
-            bundleOf(Constant.SELECTED_MEDIA to music.id)
+            bundleOf(Constant.SELECTED_MEDIA to music.mediaId)
         )
     }
 
@@ -41,22 +38,18 @@ class MusicListFragment : Fragment(R.layout.fragment_music_list) {
 
         binding.musicRecyclerView.adapter = musicAdapter
 
-        viewModel.getMusic().observe(viewLifecycleOwner) { resource ->
-            when (resource.status) {
+       viewModel.networkError.observe(viewLifecycleOwner){
+
+       }
+        viewModel.mediaItems.observe(viewLifecycleOwner){
+            when (it.status) {
                 Status.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE
                 }
-                Status.ERROR -> {
-                    binding.progressBar.visibility = View.GONE
-                    Toast.makeText(
-                        requireContext(),
-                        "Error ${resource.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                Status.ERROR -> Unit
                 Status.SUCCESS -> {
                     binding.progressBar.visibility = View.GONE
-                    musicAdapter.submitList(resource.data)
+                    musicAdapter.submitList(it.data)
                 }
             }
         }

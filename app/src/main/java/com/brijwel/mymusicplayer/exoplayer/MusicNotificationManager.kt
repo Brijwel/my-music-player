@@ -39,8 +39,8 @@ class MusicNotificationManager(
             setMediaSessionToken(sessionToken)
             setRewindIncrementMs(0)
             setFastForwardIncrementMs(0)
-            setUseNavigationActionsInCompactView(true)
-            setUseNavigationActions(true)
+           // setUseNavigationActionsInCompactView(true)
+           // setUseNavigationActions(true)
         }
     }
 
