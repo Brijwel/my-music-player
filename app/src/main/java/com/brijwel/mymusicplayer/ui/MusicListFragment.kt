@@ -10,6 +10,7 @@ import com.brijwel.mymusicplayer.R
 import com.brijwel.mymusicplayer.api.Status
 import com.brijwel.mymusicplayer.databinding.FragmentMusicListBinding
 import com.brijwel.mymusicplayer.util.Constant
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -38,10 +39,19 @@ class MusicListFragment : Fragment(R.layout.fragment_music_list) {
 
         binding.musicRecyclerView.adapter = musicAdapter
 
-       viewModel.networkError.observe(viewLifecycleOwner){
-
-       }
-        viewModel.mediaItems.observe(viewLifecycleOwner){
+        viewModel.networkError.observe(viewLifecycleOwner) {
+            it?.getContentIfNotHandled()?.let { result ->
+                when (result.status) {
+                    Status.ERROR -> Snackbar.make(
+                        requireView(),
+                        result.message ?: "An unknown error occured",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    else -> Unit
+                }
+            }
+        }
+        viewModel.mediaItems.observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE

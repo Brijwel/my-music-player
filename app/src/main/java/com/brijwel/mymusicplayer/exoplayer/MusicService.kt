@@ -60,7 +60,7 @@ class MusicService : MediaBrowserServiceCompat() {
             musicSource.fetchMusic()
         }
         val activityIntent = packageManager?.getLaunchIntentForPackage(packageName)?.let {
-            PendingIntent.getActivity(this, 0, it, 0)
+            PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
         mediaSession = MediaSessionCompat(this, SERVICE_TAG).apply {
@@ -87,6 +87,7 @@ class MusicService : MediaBrowserServiceCompat() {
                 true
             )
         }
+
 
         mediaSessionConnector = MediaSessionConnector(mediaSession)
         mediaSessionConnector.setPlaybackPreparer(musicPlaybackPreparer)
@@ -149,7 +150,7 @@ class MusicService : MediaBrowserServiceCompat() {
     ) {
         when (parentId) {
             Constant.MEDIA_ROOT_ID -> {
-                val resultsSent = musicSource. whenReady { isInitialized ->
+                val resultsSent = musicSource.whenReady { isInitialized ->
                     if (isInitialized) {
                         result.sendResult(musicSource.asMediaItems())
                         if (!isPlayerInitialized && musicSource.musics.isNotEmpty()) {

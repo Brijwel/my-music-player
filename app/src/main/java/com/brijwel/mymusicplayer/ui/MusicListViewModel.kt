@@ -6,17 +6,13 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import com.brijwel.mymusicplayer.api.Resource
 import com.brijwel.mymusicplayer.data.local.MediaItemData
-import com.brijwel.mymusicplayer.data.remote.Music
 import com.brijwel.mymusicplayer.exoplayer.MusicServiceConnection
 import com.brijwel.mymusicplayer.exoplayer.extention.isPlayEnabled
 import com.brijwel.mymusicplayer.exoplayer.extention.isPlaying
 import com.brijwel.mymusicplayer.exoplayer.extention.isPrepared
-import com.brijwel.mymusicplayer.repo.MusicRepo
 import com.brijwel.mymusicplayer.util.Constant
-import kotlinx.coroutines.flow.flow
 
 /**
  * Created by Brijwel on 07-03-2021.
@@ -25,7 +21,6 @@ private const val TAG = "MusicListViewModel"
 
 class MusicListViewModel(
     private val musicServiceConnection: MusicServiceConnection,
-    private val musicRepo: MusicRepo
 ) : ViewModel() {
     private val _mediaItems = MutableLiveData<Resource<List<MediaItemData>>>()
     val mediaItems: LiveData<Resource<List<MediaItemData>>> = _mediaItems

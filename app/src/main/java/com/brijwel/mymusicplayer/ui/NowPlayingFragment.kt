@@ -8,12 +8,12 @@ import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.brijwel.mymusicplayer.R
+import com.brijwel.mymusicplayer.api.Status
 import com.brijwel.mymusicplayer.databinding.BindingAdapter
 import com.brijwel.mymusicplayer.databinding.FragmentNowPlayingMusicBinding
 import com.brijwel.mymusicplayer.exoplayer.extention.isPlaying
 import com.brijwel.mymusicplayer.repo.WaveFormData
 import com.brijwel.mymusicplayer.util.Constant
-import com.brijwel.mymusicplayer.util.Status
 import com.google.android.material.snackbar.Snackbar
 import com.masoudss.lib.SeekBarOnProgressChanged
 import com.masoudss.lib.WaveformSeekBar
@@ -163,14 +163,14 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing_music) {
 
     private fun setElapsedTime(ms: Long) {
 
-        binding.tvTimeElapsed.text = timestampToMSS(ms)
+        binding.tvTimeElapsed.text = timeStampToMSS(ms)
     }
 
     private fun setTotalSongTime(ms: Long) {
-        binding.tvTotalTime.text = timestampToMSS(ms)
+        binding.tvTotalTime.text = timeStampToMSS(ms)
     }
 
-    private fun timestampToMSS(position: Long): String {
+    private fun timeStampToMSS(position: Long): String {
         val totalSeconds = floor(position / 1E3).toInt()
         val minutes = totalSeconds / 60
         val remainingSeconds = totalSeconds - (minutes * 60)
@@ -188,5 +188,4 @@ class NowPlayingFragment : Fragment(R.layout.fragment_now_playing_music) {
         super.onDestroyView()
         _binding = null
     }
-
 }

@@ -9,6 +9,6 @@ import org.koin.dsl.module
  * Created by Brijwel on 07-03-2021.
  */
 val viewModelModule = module {
-    viewModel { MusicListViewModel(get(), get()) }
+    viewModel { MusicListViewModel(get()) }
     viewModel { NowPlayingMusicViewModel(get()) }
 }
